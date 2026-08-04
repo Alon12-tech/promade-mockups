@@ -48,9 +48,24 @@
     font-family:'Helvetica Neue',Arial,sans-serif;
     font-size:12px;
     color:var(--muted);
+    margin:0 0 4px;
+    letter-spacing:.1px;
+  }
+  .panel .credit{
+    font-family:'Helvetica Neue',Arial,sans-serif;
+    font-size:11px;
+    color:var(--muted);
     margin:0 0 28px;
-    letter-spacing:.3px;
-    text-transform:uppercase;
+    letter-spacing:.1px;
+  }
+  .panel-footer-credit{
+    font-family:'Helvetica Neue',Arial,sans-serif;
+    font-size:10.5px;
+    color:var(--muted);
+    text-align:center;
+    margin:36px 0 8px;
+    padding-top:16px;
+    border-top:1px solid var(--line);
   }
   fieldset{
     border:none;
@@ -421,7 +436,7 @@
 
   .front-text-block{
     position:absolute;
-    left:26px; right:26px; bottom:90px;
+    left:24px; right:24px; bottom:90px;
     font-family:'Helvetica Neue',Arial,sans-serif;
   }
   .front-text-block.accent-panel{
@@ -463,7 +478,8 @@
     position:relative;
     display:flex;
     flex-direction:column;
-    flex:1;
+    height:324px;
+    overflow:hidden;
   }
   .back-content.accent-panel{
     background:rgba(255,255,255,.35);
@@ -475,9 +491,11 @@
   .back-blurb{
     font-size:12px;
     line-height:1.55;
-    text-align:justify;
+    text-align:left;
     color:#2a2823;
     flex:1;
+    min-height:0;
+    overflow:hidden;
   }
   .back-blurb ul{margin:6px 0 6px 16px; padding:0;}
   .back-blurb li{margin-bottom:3px;}
@@ -485,7 +503,7 @@
   .back-blurb h3{font-size:1.15em; font-weight:700; margin:7px 0 4px;}
   .back-blurb blockquote{
     margin:8px 0; padding:5px 0 5px 12px;
-    border-left:3px solid var(--accent);
+    border-left:3px solid #FBB92A;
     font-style:italic;
   }
   .back-blurb hr{border:none; border-top:1px solid rgba(0,0,0,.15); margin:8px 0;}
@@ -523,13 +541,15 @@
     display:flex;
     align-items:flex-end;
     justify-content:space-between;
-    margin-top:14px;
+    margin-top:8px;
+    flex-shrink:0;
   }
   .back-isbn{
     font-family:'Helvetica Neue',Arial,sans-serif;
-    font-size:10px;
+    font-size:8px;
     color:var(--ink);
   }
+  .back-barcode svg{display:block;}
   .placeholder-note{
     font-family:'Helvetica Neue',Arial,sans-serif;
     font-size:10.5px;
@@ -546,7 +566,8 @@
   <!-- ================= PANEL ================= -->
   <div class="panel">
     <h1>Generador de cubiertas</h1>
-    <p class="sub">VF de Textos Didácticos — Promade</p>
+    <p class="sub">para versiones finales de textos didácticos<br>alternativos o complementarios a las unidades didácticas</p>
+    <p class="credit">Programa de Producción de Material Didáctico Escrito - Promade</p>
 
     <fieldset>
       <legend>Identificación</legend>
@@ -556,7 +577,9 @@
         <option value="MC">Material Complementario (MC)</option>
         <option value="ML">Manual de Laboratorio (ML)</option>
         <option value="AN">Antología (AN)</option>
+        <option value="OTRO">Otro…</option>
       </select>
+      <input type="text" id="tipoOtro" placeholder="Escriba el tipo de material" style="display:none; margin-top:8px;">
 
       <label for="titulo">Título de la obra</label>
       <textarea id="titulo" placeholder="Escriba el título tal como debe aparecer en portada">Introducción a la Tecnología del Procesado de Materiales</textarea>
@@ -605,7 +628,7 @@
         <span class="hint">Color personalizado</span>
       </div>
       <div class="checks">
-        <label><input type="checkbox" id="useColorFront" checked> Usar como fondo de portada (si no hay imagen)</label>
+        <label><input type="checkbox" id="useColorFront" checked> Usar como fondo de portada (se combina con la imagen según su transparencia)</label>
         <label><input type="checkbox" id="useColorAccent"> Usar como panel de acento tras título/autores, sobre la imagen</label>
         <label><input type="checkbox" id="useColorBack" checked> Usar como fondo de contraportada</label>
         <label><input type="checkbox" id="useGradient" checked> Aplicar degradado sutil (deriva un tono más oscuro del mismo color, en vez de plano)</label>
@@ -613,10 +636,8 @@
     </fieldset>
 
     <fieldset>
-      <legend>Cintillo institucional</legend>
-      <p class="hint">Se usan de forma fija el isologotipo de la UNED y el de Promade (en ese orden), en ambas cubiertas.</p>
-      <label for="bandOpacity">Transparencia del cintillo (<span id="bandOpacityVal">35</span>%)</label>
-      <input type="range" id="bandOpacity" min="0" max="100" step="1" value="35">
+      <label for="bandOpacity">Transparencia del cintillo y paneles (<span id="bandOpacityVal">20</span>%)</label>
+      <input type="range" id="bandOpacity" min="0" max="100" step="1" value="20">
     </fieldset>
 
     <p class="panel-section">Portada</p>
@@ -629,15 +650,15 @@
       </div>
       <button class="clear-img" id="clearImage" type="button">Quitar imagen</button>
       <button class="clear-img" id="restoreSample" type="button" style="display:none;">Restaurar imagen de muestra</button>
-      <p class="hint">Resolución mínima recomendada: 1500 × 1950 px (equivalente a ~150 ppp en tamaño carta). Con menor resolución, la imagen puede pixelarse al imprimir.</p>
+      <p class="hint">Resolución mínima recomendada: 1500 × 1950 px (equivalente a ~150 ppp en tamaño carta).</p>
       <p class="hint" id="imageQualityWarning" style="display:none; color:var(--accent); font-weight:600;"></p>
 
-      <label for="imageOpacity">Transparencia de la imagen (<span id="imageOpacityVal">56</span>%)</label>
-      <input type="range" id="imageOpacity" min="0" max="100" step="1" value="56">
+      <label for="imageOpacity">Transparencia de la imagen (<span id="imageOpacityVal">70</span>%)</label>
+      <input type="range" id="imageOpacity" min="0" max="100" step="1" value="70">
 
       <div class="checks" style="margin-top:14px;">
         <label><input type="checkbox" id="imageAlsoBack" checked> Usar también esta imagen en la contraportada</label>
-        <label><input type="checkbox" id="backImageAccent" checked> Agregar panel de acento (vidrio esmerilado) tras la reseña</label>
+        <label><input type="checkbox" id="backImageAccent" checked> Agregar panel de acento tras la reseña</label>
       </div>
     </fieldset>
 
@@ -732,16 +753,18 @@
         <button type="button" class="rte-btn" data-cmd="insertHorizontalRule" title="Línea separadora">―</button>
         <button type="button" class="rte-btn" data-cmd="removeFormat" title="Quitar formato">⌫</button>
       </div>
-      <div class="rte-editable" id="resena" contenteditable="true"><blockquote>"Transformar la materia no es solo cuestión de fuerza,<br>sino del dominio absoluto de la estructura microatómica."</blockquote><p>¿Cómo pasa un lingote de metal amorfo a convertirse en un álabe de turbina capaz de soportar temperaturas extremas? ¿Qué diferencia la inyección de un polímero común de la sinterización de una cerámica técnica para uso biomédico?</p><p><b>Introducción a la Tecnología del Procesado de Materiales</b> ofrece una visión integral, rigurosa y actualizada de los métodos fundamentales que permiten dar forma, propiedad y función a la materia. A través de un enfoque que equilibra la teoría física con la práctica industrial, este volumen guía al lector por las cuatro grandes familias de procesado:</p><ul><li><b>Conformado por moldeo y fundición:</b> Fenómenos de solidificación y control de defectos.</li><li><b>Deformación plástica y conformada:</b> Laminación, forja, extrusión y su impacto en la microestructura.</li><li><b>Sinterización y metalurgia de polvos:</b> El arte de crear sólidos a partir de partículas finas.</li><li><b>Procesado de polímeros y compuestos:</b> Métodos de moldeo, curado y manufactura aditiva.</li></ul><p>Con un lenguaje claro pero científicamente riguroso, abundantes esquemas técnicos, casos de estudio reales y un capítulo dedicado a la sostenibilidad y economía circular en la manufactura moderna, esta obra es la herramienta imprescindible tanto para estudiantes de grado como para ingenieros en activo que buscan comprender el nexo crítico entre el <b>procesado</b>, la <b>microestructura</b> y el <b>rendimiento final</b> del material.</p><p>Incluye:</p><ul><li>Ejercicios resueltos y problemas de diseño práctico.</li><li>Introducción a la fabricación aditiva e impresión 3D industrial.</li><li>Guía visual de defectos típicos de procesado y su caracterización.</li></ul></div>
+      <div class="rte-editable" id="resena" contenteditable="true"><blockquote>"Transformar la materia no es solo cuestión de fuerza,<br>sino del dominio absoluto de la estructura microatómica."</blockquote><p>¿Cómo pasa un lingote a convertirse en un álabe de turbina extremo? ¿Qué diferencia la inyección de un polímero común de la sinterización de una cerámica biomédica?</p><p><b>Introducción a la Tecnología del Procesado de Materiales</b> ofrece una visión integral y rigurosa de los métodos que dan forma y función a la materia. Equilibrando teoría física y práctica industrial, este volumen guía al lector por las cuatro grandes familias de procesado:</p><ul><li><b>Conformado por moldeo y fundición:</b> Solidificación y control de defectos.</li><li><b>Deformación plástica:</b> Laminación, forja, extrusión y su impacto microestructural.</li><li><b>Sinterización y metalurgia de polvos:</b> Creación de sólidos desde partículas finas.</li><li><b>Polímeros y compuestos:</b> Moldeo, curado y manufactura aditiva.</li></ul><p>Con un enfoque claro, esquemas técnicos, casos reales y un capítulo sobre sostenibilidad en la manufactura moderna, esta obra es la herramienta imprescindible para comprender el nexo entre procesado, microestructura y rendimiento.</p><p><b>Incluye:</b></p><ul><li>Ejercicios resueltos y problemas de diseño práctico.</li><li>Introducción a la fabricación aditiva e impresión 3D industrial.</li><li>Guía visual de defectos típicos de procesado y su caracterización.</li></ul></div>
       <p class="hint">Alineación, tamaños y estilos quedan a libre criterio de quien redacte — cada bloque de texto puede formatearse de forma independiente.</p>
     </fieldset>
+
+    <p class="panel-footer-credit">Creado por Mario A. Marín-Romero, Julio de 2026</p>
 
   </div>
 
   <!-- ================= PREVIEW ================= -->
   <div class="stage">
     <div class="stage-header">
-      <h2>Vista previa — sin lomo</h2>
+      <h2>Vista previa</h2>
       <div class="zoom-bar">
         <button class="zoom-btn" id="zoomOut" type="button" title="Alejar">−</button>
         <span class="zoom-label" id="zoomLabel">100%</span>
@@ -754,6 +777,8 @@
         <button id="exportPdf" type="button">Descargar PDF (carta)</button>
       </div>
     </div>
+
+    <p class="placeholder-note">Cubierta en proporción fija tamaño carta (8.5 × 11 in).</p>
 
     <div class="covers" id="covers">
       <div class="cover-wrap">
@@ -783,6 +808,7 @@
             <p class="back-blurb" id="backBlurb"></p>
             <div class="back-bottom">
               <span class="back-isbn" id="backIsbnLabel">ISBN: 978-9968-99-999-9</span>
+              <div class="back-barcode" id="backBarcode"></div>
             </div>
           </div>
           <div class="brand-band back-band">
@@ -792,8 +818,6 @@
         </div>
       </div>
     </div>
-
-    <p class="placeholder-note">Cubierta en proporción fija tamaño carta (8.5 × 11 in), lista para impresión.</p>
   </div>
 
 </div>
@@ -831,6 +855,36 @@ function isLight(hex){
   const yiq = (r*299 + g*587 + b*114) / 1000;
   return yiq > 150;
 }
+// ---------------- código de barras EAN-13 (a partir del ISBN) ----------------
+const EAN_L = ["0001101","0011001","0010011","0111101","0100011","0110001","0101111","0111011","0110111","0001011"];
+const EAN_G = ["0100111","0110011","0011011","0100001","0011101","0111001","0000101","0010001","0001001","0010111"];
+const EAN_R = ["1110010","1100110","1101100","1000010","1011100","1001110","1010000","1000100","1001000","1110100"];
+const EAN_PARITY = ["LLLLLL","LLGLGG","LLGGLG","LLGGGL","LGLLGG","LGGLLG","LGGGLL","LGLGLG","LGLGGL","LGGLGL"];
+
+function ean13Svg(digitsStr, barWidth, height){
+  const digits = digitsStr.replace(/\D/g, "");
+  if(digits.length !== 13) return "";
+  const parity = EAN_PARITY[+digits[0]];
+  let bits = "101"; // guarda inicial
+  for(let i = 0; i < 6; i++){
+    const d = +digits[i + 1];
+    bits += parity[i] === "L" ? EAN_L[d] : EAN_G[d];
+  }
+  bits += "01010"; // guarda central
+  for(let i = 0; i < 6; i++){
+    bits += EAN_R[+digits[i + 7]];
+  }
+  bits += "101"; // guarda final
+  const totalW = bits.length * barWidth;
+  let rects = "";
+  for(let i = 0; i < bits.length; i++){
+    if(bits[i] === "1"){
+      rects += `<rect x="${i * barWidth}" y="0" width="${barWidth}" height="${height}" fill="#1c1b19"/>`;
+    }
+  }
+  return `<svg viewBox="0 0 ${totalW} ${height}" width="${totalW}" height="${height}">${rects}</svg>`;
+}
+
 function darkenColor(hex, percent){
   const c = hex.replace('#','');
   const r = Math.max(0, Math.round(parseInt(c.substr(0,2),16) * (1 - percent)));
@@ -952,7 +1006,7 @@ function checkImageQuality(dataUrl){
 });
 
 // ---------------- inputs simples ----------------
-["titulo","subtitulo","isbn","resena","tipoTD","fontFamily"].forEach(id => {
+["titulo","subtitulo","isbn","resena","tipoTD","tipoOtro","fontFamily"].forEach(id => {
   document.getElementById(id).addEventListener("input", renderPreview);
   document.getElementById(id).addEventListener("change", renderPreview);
 });
@@ -1103,7 +1157,14 @@ function renderPreview(){
     ML: "Manual de Laboratorio",
     AN: "Antología",
   };
-  tagEl.textContent = TIPO_NOMBRES[tipo] || tipo;
+  const tipoOtroInput = document.getElementById("tipoOtro");
+  if(tipo === "OTRO"){
+    tipoOtroInput.style.display = "block";
+    tagEl.textContent = tipoOtroInput.value.trim() || "Otro";
+  } else {
+    tipoOtroInput.style.display = "none";
+    tagEl.textContent = TIPO_NOMBRES[tipo] || tipo;
+  }
 
   const fontFamily = document.getElementById("fontFamily").value;
 
@@ -1190,11 +1251,23 @@ function renderPreview(){
   // por lo que ya no se fuerza un alineado global aquí.
   document.getElementById("backIsbnLabel").textContent = "ISBN: " + isbn;
   document.getElementById("backIsbnLabel").style.fontFamily = fontFamily;
+  document.getElementById("backBarcode").innerHTML = ean13Svg(isbn, 0.9, 24);
 
   const bandAlpha = document.getElementById("bandOpacity").value / 100;
   document.querySelectorAll(".brand-band").forEach(band => {
     band.style.background = `rgba(255,255,255,${bandAlpha})`;
   });
+  tagEl.style.background = `rgba(255,255,255,${bandAlpha})`;
+  if(textBlock.classList.contains("accent-panel")){
+    textBlock.style.background = `rgba(255,255,255,${bandAlpha})`;
+  } else {
+    textBlock.style.background = "";
+  }
+  if(backContentEl.classList.contains("accent-panel")){
+    backContentEl.style.background = `rgba(255,255,255,${bandAlpha})`;
+  } else {
+    backContentEl.style.background = "";
+  }
 }
 
 // ---------------- exportar ----------------
@@ -1231,7 +1304,7 @@ let zoomLevel = 1;
 const coversEl = document.getElementById("covers");
 const zoomLabel = document.getElementById("zoomLabel");
 function applyZoom(){
-  zoomLevel = Math.min(2, Math.max(0.5, zoomLevel));
+  zoomLevel = Math.min(3, Math.max(0.5, zoomLevel));
   coversEl.style.transform = `scale(${zoomLevel})`;
   zoomLabel.textContent = Math.round(zoomLevel * 100) + "%";
 }
