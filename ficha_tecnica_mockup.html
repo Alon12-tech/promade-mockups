@@ -6,7 +6,7 @@
 <title>Ficha técnica — Introducción a la Tecnología del Procesado de Materiales</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&family=Merriweather:wght@400;700&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Merriweather:wght@400;700&display=swap" rel="stylesheet">
 <style>
   :root{
     --azul:#0D3996;
@@ -19,11 +19,50 @@
     --muted:#6b7280;
   }
   *{box-sizing:border-box;}
-  body{margin:0; background:var(--papel); color:var(--ink); font-family:'Space Grotesk',sans-serif;}
+  body{margin:0; background:var(--papel); color:var(--ink); font-family:Arial,Helvetica,sans-serif;}
   a{color:inherit; text-decoration:none;}
   .dashed{height:0; background-image:repeating-linear-gradient(to right, var(--dorado) 0, var(--dorado) 5px, transparent 5px, transparent 9px);}
 
   /* header (same system as catálogo) */
+  .inst-strip{
+    background:var(--azul-oscuro);
+    color:#dbe3f7;
+    font-size:11.5px;
+  }
+  .inst-strip-inner{
+    max-width:1080px;
+    margin:0 auto;
+    padding:6px 40px;
+    display:flex;
+    align-items:center;
+    justify-content:space-between;
+    flex-wrap:wrap;
+    gap:10px;
+  }
+  .inst-strip-label{letter-spacing:.2px;}
+  .inst-login{display:flex; align-items:center; gap:6px;}
+  .inst-login label{color:#9fb0d6;}
+  .inst-login input{
+    font-family:Arial,Helvetica,sans-serif;
+    font-size:11px;
+    padding:3px 6px;
+    border:1px solid #2d3f6b;
+    border-radius:3px;
+    background:#0a1c4a;
+    color:#fff;
+    width:90px;
+  }
+  .inst-login button{
+    font-family:Arial,Helvetica,sans-serif;
+    font-size:11px;
+    font-weight:600;
+    padding:4px 10px;
+    border:none;
+    border-radius:3px;
+    background:var(--dorado);
+    color:var(--azul-oscuro);
+    cursor:pointer;
+  }
   header{background:#fff; padding:18px 40px 0;}
   .header-row{display:flex; align-items:center; justify-content:space-between; padding-bottom:16px;}
   .logos{display:flex; align-items:center; gap:22px;}
@@ -100,7 +139,7 @@
 
   .actions{display:flex; gap:10px; flex-wrap:wrap; margin-bottom:22px;}
   .btn{
-    font-family:'Space Grotesk',sans-serif;
+    font-family:Arial,Helvetica,sans-serif;
     font-size:13.5px; font-weight:600;
     padding:11px 20px;
     border-radius:6px;
@@ -193,6 +232,19 @@
 </style>
 </head>
 <body>
+
+<div class="inst-strip">
+  <div class="inst-strip-inner">
+    <span class="inst-strip-label">Programa de Producción de Material Didáctico Escrito</span>
+    <form class="inst-login" onsubmit="return false;">
+      <label for="instUser">Usuario</label>
+      <input type="text" id="instUser" autocomplete="off">
+      <label for="instPass">Clave</label>
+      <input type="password" id="instPass" autocomplete="off">
+      <button type="submit">Iniciar sesión</button>
+    </form>
+  </div>
+</div>
 
 <header>
   <div class="header-row">
