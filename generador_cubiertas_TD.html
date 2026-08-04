@@ -293,6 +293,7 @@
     gap:26px;
     height:100vh;
     overflow-y:auto;
+    overflow-x:auto;
   }
   .stage-header{
     width:100%;
@@ -300,7 +301,40 @@
     display:flex;
     justify-content:space-between;
     align-items:baseline;
+    flex-wrap:wrap;
+    gap:10px;
     font-family:'Helvetica Neue',Arial,sans-serif;
+  }
+  .zoom-bar{
+    display:flex;
+    align-items:center;
+    gap:8px;
+  }
+  .zoom-btn{
+    width:26px; height:26px;
+    border:1px solid var(--line);
+    background:#fff;
+    border-radius:5px;
+    font-size:16px;
+    line-height:1;
+    cursor:pointer;
+    color:var(--ink);
+  }
+  .zoom-btn:hover{border-color:var(--accent); color:var(--accent);}
+  .zoom-label{
+    font-size:12.5px;
+    color:var(--muted);
+    min-width:38px;
+    text-align:center;
+  }
+  .zoom-reset{
+    font-size:11.5px;
+    border:none;
+    background:none;
+    color:var(--accent);
+    cursor:pointer;
+    text-decoration:underline;
+    padding:0 0 0 4px;
   }
   .stage-header h2{
     font-size:13px;
@@ -333,6 +367,8 @@
     flex-direction:column;
     align-items:center;
     gap:34px;
+    transform-origin:top center;
+    transition:transform .12s ease;
   }
   .cover-wrap{display:flex; flex-direction:column; align-items:center; gap:10px;}
   .cover-label{
@@ -706,6 +742,12 @@
   <div class="stage">
     <div class="stage-header">
       <h2>Vista previa — sin lomo</h2>
+      <div class="zoom-bar">
+        <button class="zoom-btn" id="zoomOut" type="button" title="Alejar">−</button>
+        <span class="zoom-label" id="zoomLabel">100%</span>
+        <button class="zoom-btn" id="zoomIn" type="button" title="Acercar">+</button>
+        <button class="zoom-reset" id="zoomReset" type="button" title="Restablecer">Restablecer</button>
+      </div>
       <div class="export-bar">
         <button class="secondary" id="exportFront" type="button">Portada (PNG)</button>
         <button class="secondary" id="exportBack" type="button">Contraportada (PNG)</button>
@@ -713,7 +755,7 @@
       </div>
     </div>
 
-    <div class="covers">
+    <div class="covers" id="covers">
       <div class="cover-wrap">
         <span class="cover-label">Portada</span>
         <div class="cover" id="frontCover">
@@ -1183,6 +1225,19 @@ async function exportPdf(){
   pdf.save("cubierta_TD_carta.pdf");
 }
 document.getElementById("exportPdf").addEventListener("click", exportPdf);
+
+// ---------------- zoom de la vista previa ----------------
+let zoomLevel = 1;
+const coversEl = document.getElementById("covers");
+const zoomLabel = document.getElementById("zoomLabel");
+function applyZoom(){
+  zoomLevel = Math.min(2, Math.max(0.5, zoomLevel));
+  coversEl.style.transform = `scale(${zoomLevel})`;
+  zoomLabel.textContent = Math.round(zoomLevel * 100) + "%";
+}
+document.getElementById("zoomIn").addEventListener("click", () => { zoomLevel += 0.1; applyZoom(); });
+document.getElementById("zoomOut").addEventListener("click", () => { zoomLevel -= 0.1; applyZoom(); });
+document.getElementById("zoomReset").addEventListener("click", () => { zoomLevel = 1; applyZoom(); });
 
 // ---------------- init ----------------
 renderAuthors();
