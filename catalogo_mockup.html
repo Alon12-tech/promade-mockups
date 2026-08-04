@@ -411,7 +411,7 @@
 const COVER_PALETTE = ["#0D3996","#021135","#5b7a63","#8a4b3b","#3d5a80","#6b4c93"];
 
 const ITEMS = [
-  {tipo:"GE", tipoLabel:"Guía de Estudio", titulo:"Introducción a la Tecnología del Procesado de Materiales", autores:"María Vargas López, Juan Pérez Pérez", escuela:"Ciencias Exactas y Naturales", catedra:"Ingeniería Industrial", area:"Ingeniería y Tecnología", vigente:true, isbn:"978-9968-99-999-9", externo:false, color:0},
+  {tipo:"GE", tipoLabel:"Guía de Estudio", titulo:"Introducción a la Tecnología del Procesado de Materiales", autores:"María Vargas López, Juan Pérez Pérez", escuela:"Ciencias Exactas y Naturales", catedra:"Ingeniería Industrial", area:"Ingeniería y Tecnología", vigente:true, isbn:"978-9968-99-999-9", externo:false, color:0, ficha:"ficha_tecnica_mockup.html"},
   {tipo:"AN", tipoLabel:"Antología", titulo:"Vuelo de colibríes: lecturas de zoología tropical", autores:"Adriana Salazar Meléndez", escuela:"Ciencias Exactas y Naturales", catedra:"Biología General", area:"Ciencias Naturales", vigente:true, isbn:"978-9968-04-311-3", externo:false, color:1},
   {tipo:"UD", tipoLabel:"Unidad Didáctica", titulo:"Estrategias pedagógicas para el desarrollo del infante de 0 a 3 años", autores:"Karla Jiménez Rodríguez y equipo de cátedra", escuela:"Ciencias de la Educación", catedra:"Educación Preescolar", area:"Ciencias Sociales", vigente:true, isbn:"978-9968-04-053-1", externo:true, color:2},
   {tipo:"ML", tipoLabel:"Manual de Laboratorio", titulo:"Prácticas de Física Experimental I", autores:"Randall Solano Mora", escuela:"Ciencias Exactas y Naturales", catedra:"Física General", area:"Ciencias Naturales", vigente:true, isbn:"978-9968-04-402-8", externo:false, color:3},
@@ -428,18 +428,21 @@ ITEMS.forEach(item => {
   const base = COVER_PALETTE[item.color];
   const card = document.createElement("div");
   card.className = "card";
+  const fichaHref = item.ficha || "javascript:void(0)";
   card.innerHTML = `
-    <div class="card-cover" style="background:linear-gradient(160deg, ${base}, ${base}cc)">
-      <span class="card-tag">${item.tipoLabel}</span>
-      <p class="card-cover-title">${item.titulo}</p>
-      <div class="dashed"></div>
-    </div>
+    <a href="${fichaHref}" style="display:block; color:inherit;">
+      <div class="card-cover" style="background:linear-gradient(160deg, ${base}, ${base}cc)">
+        <span class="card-tag">${item.tipoLabel}</span>
+        <p class="card-cover-title">${item.titulo}</p>
+        <div class="dashed"></div>
+      </div>
+    </a>
     <div class="card-body">
       <div class="card-meta">
         <span>${item.escuela}</span><span class="dot">·</span><span>${item.catedra}</span>
       </div>
       <span class="area-chip">${item.area}</span>
-      <div class="card-authors">${item.autores}</div>
+      <div class="card-authors"><a href="${fichaHref}" style="color:inherit; text-decoration:none;">${item.autores}</a></div>
       <div class="card-meta"><span>ISBN ${item.isbn}</span></div>
       <div class="status-row">
         <span class="status ${item.vigente ? "vigente" : "no-vigente"}">${item.vigente ? "Vigente" : "No vigente"}</span>
@@ -447,7 +450,7 @@ ITEMS.forEach(item => {
           ? (item.link
               ? `<a class="action eu" href="${item.link}" target="_blank" rel="noopener">Ver en EUNED ↗</a>`
               : `<a class="action eu" href="javascript:void(0)">Ver en EUNED ↗</a>`)
-          : `<a class="action" href="javascript:void(0)">Descargar VF ↓</a>`}
+          : `<a class="action" href="${fichaHref}">Descargar VF ↓</a>`}
       </div>
     </div>
   `;
