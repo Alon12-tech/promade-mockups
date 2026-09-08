@@ -132,8 +132,8 @@
   .badges{display:flex; flex-wrap:wrap; gap:8px; margin-bottom:16px;}
   .badge{font-size:11px; font-weight:600; padding:4px 10px; border-radius:5px;}
   .badge.tipo{background:#e7edfa; color:var(--azul);}
-  .badge.vigente{background:#e8f3ea; color:#1c7a34;}
   .badge.area{background:#eef1f7; color:var(--azul-oscuro);}
+  .badge.novedad{background:#FBB92A; color:#021135;}
   .info .authors{font-family:'Merriweather',serif; font-size:14px; margin-bottom:18px;}
   .info .authors b{font-weight:700;}
 
@@ -191,10 +191,22 @@
   .lom-field:last-child{border-bottom:none;}
   .lom-field .k{color:var(--muted); flex-shrink:0;}
   .lom-field .v{text-align:right; font-weight:500;}
-  .role-list{display:flex; flex-direction:column; gap:8px; font-size:13px;}
-  .role-row{display:flex; justify-content:space-between; gap:12px;}
-  .role-row .role{font-size:10.5px; text-transform:uppercase; letter-spacing:.4px; color:var(--muted); font-weight:600;}
-  .role-row .name{font-family:'Merriweather',serif; text-align:right;}
+  .role-list{display:flex; flex-direction:column;}
+  .role-row{display:flex; justify-content:space-between; gap:12px; font-size:13px; padding:6px 0; border-bottom:1px dashed #eee;}
+  .role-row:last-child{border-bottom:none;}
+  .role-row .role{color:var(--muted); flex-shrink:0;}
+  .role-row .name{text-align:right; font-weight:500;}
+
+  .lom-field-block{padding:8px 0; border-bottom:1px dashed #eee; font-size:13px;}
+  .lom-field-block:last-child{border-bottom:none;}
+  .lom-field-block .k{display:block; color:var(--muted); margin-bottom:6px;}
+  .chapter-list{margin:0; padding-left:18px; font-weight:500;}
+  .chapter-list li{margin-bottom:3px;}
+  .cine-path{display:flex; flex-direction:column; gap:3px; font-weight:500;}
+  .cine-path span:nth-child(2){padding-left:16px; color:var(--ink); opacity:.85;}
+  .cine-path span:nth-child(3){padding-left:32px; color:var(--ink); opacity:.7; font-weight:400;}
+  .cine-path span::before{content:"› "; opacity:.5;}
+  .cine-path span:first-child::before{content:"";}
 
   .ia-badge{
     display:inline-flex; align-items:center; gap:6px;
@@ -262,7 +274,7 @@
 </header>
 
 <div class="breadcrumb">
-  <a href="catalogo_mockup.html">Catálogo</a> · <a href="catalogo_mockup.html">Guía de Estudio</a> · <a href="catalogo_mockup.html">Ciencias Exactas y Naturales</a>
+  <a href="catalogo_mockup.html">Catálogo</a> · <a href="catalogo_mockup.html">Guía de estudio</a> · <a href="catalogo_mockup.html">Ciencias Exactas y Naturales</a>
 </div>
 
 <main>
@@ -282,14 +294,19 @@
       <h1>Introducción a la Tecnología del Procesado de Materiales</h1>
       <p class="subtitle">De la materia prima a la ingeniería de vanguardia</p>
       <div class="badges">
-        <span class="badge tipo">Guía de Estudio</span>
-        <span class="badge vigente">Vigente</span>
-        <span class="badge area">Ingeniería y Tecnología</span>
+        <span class="badge tipo">Guía de estudio</span>
+        <span class="badge area">Ingeniería industrial</span>
+        <span class="badge novedad" id="badgeNovedad" style="display:none;">Novedad</span>
       </div>
       <p class="authors"><b>María Vargas López</b> · <b>Juan Pérez Pérez</b></p>
 
+      <!-- RS-06(a): visitante Público en general sin sesión iniciada. El techo
+           de este MD es Descarga, pero esa acción solo está habilitada para
+           perfiles autenticados (IS, Estudiantado matriculado, Promade) — por
+           eso el botón no se muestra en absoluto, ni siquiera deshabilitado.
+           Al iniciar sesión, el sistema reevalúa el perfil contra RS-02 y el
+           botón de Descargar VF aparece (habilitado o no, según corresponda). -->
       <div class="actions">
-        <button class="btn primary" type="button">Descargar VF ↓</button>
         <button class="btn secondary" type="button">Consultar en línea ↗</button>
       </div>
 
@@ -312,21 +329,33 @@
     <div class="lom-card">
       <h3>General</h3>
       <div class="lom-field"><span class="k">Identificador (ISBN)</span><span class="v">978-9968-99-999-9</span></div>
-      <div class="lom-field"><span class="k">Tipo de MD</span><span class="v">Guía de Estudio (GE)</span></div>
+      <div class="lom-field"><span class="k">Tipo de MD</span><span class="v">Guía de estudio (GE)</span></div>
       <div class="lom-field"><span class="k">Idioma</span><span class="v">Español</span></div>
       <div class="lom-field"><span class="k">Estructura</span><span class="v">Documento único</span></div>
-      <div class="lom-field"><span class="k">Palabras clave</span><span class="v">materiales, procesado, ingeniería</span></div>
+      <div class="lom-field"><span class="k">Cantidad de páginas</span><span class="v">186</span></div>
+      <div class="lom-field-block">
+        <span class="k">Lista de capítulos</span>
+        <ol class="chapter-list">
+          <li>Materia prima y clasificación</li>
+          <li>Procesos de conformado</li>
+          <li>Procesos de unión</li>
+          <li>Procesos de acabado</li>
+        </ol>
+      </div>
+      <div class="lom-field"><span class="k">Palabras clave</span><span class="v">Ingeniería industrial, Manufactura industrial, Física</span></div>
     </div>
 
     <div class="lom-card">
-      <h3>Ciclo de vida</h3>
-      <div class="lom-field"><span class="k">Vigencia</span><span class="v">Vigente</span></div>
-      <div class="lom-field"><span class="k">Fecha de publicación</span><span class="v">15 jul. 2026</span></div>
+      <h3>Historial</h3>
+      <div class="lom-field"><span class="k">Versión</span><span class="v">1.0</span></div>
+      <div class="lom-field" style="margin-top:8px;"><span class="k">Fecha de publicación</span><span class="v">15 jul. 2026</span></div>
       <div class="role-list" style="margin-top:8px;">
-        <div class="role-row"><span class="role">Autoría</span><span class="name">María Vargas López, Juan Pérez Pérez</span></div>
-        <div class="role-row"><span class="role">Producción académica (PA)</span><span class="name">Mario Marín Romero</span></div>
-        <div class="role-row"><span class="role">Validación de cátedra (EC)</span><span class="name">Cátedra de Ingeniería Industrial</span></div>
+        <div class="role-row"><span class="role">Equipo de autoría</span><span class="name">María Vargas López, Juan Pérez Pérez</span></div>
+        <div class="role-row"><span class="role">Edición y producción académica</span><span class="name">Mario Marín Romero</span></div>
+        <div class="role-row"><span class="role">Especialista en contenido</span><span class="name">Diego Herrera Solís</span></div>
+        <div class="role-row"><span class="role">Coordinación académica</span><span class="name">Evelin Umaña Ramírez</span></div>
       </div>
+      <div class="lom-field" style="margin-top:8px;"><span class="k">Vigencia en la oferta académica actual de la UNED</span><span class="v">Vigente</span></div>
     </div>
 
     <div class="lom-card">
@@ -334,35 +363,42 @@
       <div class="lom-field"><span class="k">Formato de archivo</span><span class="v">PDF</span></div>
       <div class="lom-field"><span class="k">Tamaño</span><span class="v">8.4 MB</span></div>
       <div class="lom-field"><span class="k">Requisitos de software</span><span class="v">Lector de PDF</span></div>
-      <div class="lom-field"><span class="k">Imagen de portada</span><span class="v">Incluida ✓</span></div>
-      <div class="lom-field"><span class="k">Modalidad de acceso</span><span class="v">Descarga y consulta en línea</span></div>
     </div>
 
     <div class="lom-card">
       <h3>Educativa</h3>
       <div class="lom-field"><span class="k">Tipo de recurso</span><span class="v">Guía autoinstructiva</span></div>
       <div class="lom-field"><span class="k">Rol en el proceso</span><span class="v">Material de apoyo principal</span></div>
-      <div class="lom-field"><span class="k">Tiempo estimado</span><span class="v">≈ 40 horas</span></div>
+      <div class="lom-field"><span class="k">Tiempo estimado de estudio</span><span class="v">≈ 40 horas</span></div>
     </div>
 
     <div class="lom-card">
       <h3>Derechos</h3>
-      <div class="lom-field"><span class="k">Nivel de acceso</span><span class="v">Público</span></div>
+      <div class="lom-field"><span class="k">Nivel de acceso</span><span class="v">Descarga</span></div>
       <span class="ia-badge">Declaración de uso de IA disponible</span>
     </div>
 
     <div class="lom-card">
       <h3>Clasificación</h3>
       <div class="lom-field"><span class="k">Escuela</span><span class="v">Ciencias Exactas y Naturales</span></div>
-      <div class="lom-field"><span class="k">Cátedra</span><span class="v">Ingeniería Industrial</span></div>
-      <div class="lom-field"><span class="k">Área (UNESCO)</span><span class="v">Ingeniería y Tecnología</span></div>
+      <div class="lom-field"><span class="k">Carrera o programa</span><span class="v">Bachillerato en Ingeniería Industrial</span></div>
+      <div class="lom-field"><span class="k">Asignatura</span><span class="v">Procesos de Manufactura</span></div>
+      <div class="lom-field"><span class="k">Código</span><span class="v">0405</span></div>
+      <div class="lom-field-block">
+        <span class="k">Área de conocimiento (CINE-F 2013, UNESCO-UIS)</span>
+        <div class="cine-path">
+          <span>07 Ingeniería, industria y construcción</span>
+          <span>071 Ingeniería y profesiones afines</span>
+          <span>0715 Mecánica y trabajos con metales</span>
+        </div>
+      </div>
     </div>
 
     <div class="lom-card" style="grid-column:1/-1;">
       <h3>Relación</h3>
       <a class="related-link" href="javascript:void(0)">
-        <span class="rt">Vínculo jerárquico — Unidad Didáctica asociada</span>
-        <span class="rn">UD-0512 · Fundamentos de Ingeniería de Materiales ↗</span>
+        <span class="rt">Material de la misma asignatura — Procesos de Manufactura (II-405)</span>
+        <span class="rn">ML-0089 · Manual de Prácticas de Procesado de Materiales ↗</span>
       </a>
       <a class="related-link" href="javascript:void(0)">
         <span class="rt">Material relacionado</span>
@@ -402,6 +438,15 @@ document.getElementById("coverMainImg").src = COVER_IMAGES.front;
 document.querySelectorAll(".thumb").forEach(t => {
   t.style.backgroundImage = `url('${COVER_IMAGES[t.dataset.key]}')`;
 });
+
+// RF-21: misma regla que en el catálogo — 6 meses desde la fecha de
+// publicación en la plataforma, calculada contra la fecha de hoy.
+const fechaPublicacionPlataforma = new Date("2026-07-15");
+const limiteNovedad = new Date(fechaPublicacionPlataforma);
+limiteNovedad.setMonth(limiteNovedad.getMonth() + 6);
+if (new Date() <= limiteNovedad) {
+  document.getElementById("badgeNovedad").style.display = "inline-block";
+}
 </script>
 
 </body>
